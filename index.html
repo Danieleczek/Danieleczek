@@ -1,194 +1,85 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Fajne animacje</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strona</title>
 
 <style>
-:root{
-  --bg1:#0f2027;
-  --bg2:#203a43;
-  --bg3:#2c5364;
-  --accent:#ffd166;
-}
-
 *{box-sizing:border-box}
-html,body{
-  margin:0;
-  height:100%;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  color:#fff;
-  overflow:hidden;
-}
 
-/* ANIMOWANY GRADIENT */
 body{
-  background: linear-gradient(270deg,var(--bg1),var(--bg2),var(--bg3));
-  background-size: 600% 600%;
-  animation: gradientMove 14s ease infinite;
+  margin:0;
+  min-height:100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#fff;
+  background: linear-gradient(120deg,#1e3c72,#2a5298,#1e3c72);
+  background-size:300% 300%;
+  animation:gradient 12s ease infinite;
 }
 
-@keyframes gradientMove{
+@keyframes gradient{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
 }
 
-/* CZĄSTECZKI */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-}
-
-/* CONTENT */
-.container{
-  position:relative;
-  z-index:1;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+.wrapper{
+  max-width:900px;
+  margin:auto;
+  padding:80px 20px;
   text-align:center;
-  padding:20px;
 }
 
-/* TEKST GŁÓWNY */
-.title{
-  font-size:clamp(1.8rem,4vw,3.2rem);
-  font-weight:800;
-  line-height:1.25;
-  opacity:0;
-  transform:translateY(30px) scale(.95);
-  animation: enter 1.2s ease forwards;
+/* NAGŁÓWEK */
+h1{
+  font-size:clamp(2rem,4vw,3rem);
+  margin-bottom:40px;
+  animation:fadeDown .8s ease;
 }
 
-@keyframes enter{
-  to{opacity:1; transform:translateY(0) scale(1)}
-}
-
-/* PODŚWIETLENIE */
 .highlight{
-  color:var(--accent);
-  text-shadow:0 0 20px rgba(255,209,102,.6);
+  color:#ffd166;
+  text-shadow:0 0 15px rgba(255,209,102,.6);
 }
 
-/* SHAKE CO JAKIŚ CZAS */
-.shake{
-  animation: shake 5s ease-in-out infinite;
-}
-@keyframes shake{
-  0%,96%,100%{transform:translateX(0)}
-  97%{transform:translateX(-2px)}
-  98%{transform:translateX(2px)}
-  99%{transform:translateX(-1px)}
+/* BOX */
+.box{
+  padding:35px;
+  border-radius:18px;
+  background:rgba(255,255,255,.15);
+  backdrop-filter: blur(6px);
+  font-size:1.6rem;
+  line-height:1.5;
+  animation:float 5s ease-in-out infinite;
 }
 
-/* DOLNY TEKST */
-.footer{
-  position:absolute;
-  bottom:28px;
-  font-size:clamp(.95rem,2.2vw,1.2rem);
-  opacity:0;
-  animation: fadeUp .9s ease forwards;
-  animation-delay:1.4s;
-}
-@keyframes fadeUp{
+@keyframes fadeDown{
+  from{opacity:0; transform:translateY(-20px)}
   to{opacity:1; transform:translateY(0)}
 }
-.footer span{
-  display:inline-block;
-  animation: wave 1.6s ease-in-out infinite;
-}
-@keyframes wave{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-4px)}
-}
 
-/* PRZYCISK */
-button{
-  margin-top:22px;
-  padding:12px 20px;
-  border-radius:999px;
-  border:none;
-  background:rgba(255,255,255,.15);
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  backdrop-filter: blur(6px);
-  transition:.25s;
-}
-button:hover{
-  background:rgba(255,255,255,.25);
-  transform:translateY(-2px);
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
 }
 </style>
 </head>
 
 <body>
-<canvas id="particles"></canvas>
 
-<div class="container">
-  <div class="title shake" id="typing">
-    <span class="highlight">Daniel</span> to fajny tata<br>
+<div class="wrapper">
+  <h1>
+    <span class="highlight">Daniel</span> to fajny tata,<br>
     ale czasem mordę ma za dużą
-  </div>
+  </h1>
 
-  <button onclick="boom()">kliknij efekt ✨</button>
-
-  <div class="footer">
-    <span>D</span><span>l</span><span>a</span><span>c</span><span>z</span><span>e</span><span>g</span><span>o</span><span>?</span>
-    &nbsp;Ponieważ kłóci się bezinteresownie, a nie ma racji
+  <div class="box">
+    <strong>Dlaczego?</strong><br><br>
+    Ponieważ kłóci się bezinteresownie,<br>
+    a nie ma racji.
   </div>
 </div>
 
-<script>
-// EFEKT "BOOM"
-function boom(){
-  document.querySelector('.title').animate([
-    {transform:'scale(1)'},
-    {transform:'scale(1.06)'},
-    {transform:'scale(1)'}
-  ],{duration:400,easing:'ease-out'});
-}
-
-// CZĄSTECZKI
-const c = document.getElementById('particles');
-const ctx = c.getContext('2d');
-let w,h,particles=[];
-function resize(){
-  w=c.width=window.innerWidth;
-  h=c.height=window.innerHeight;
-}
-window.addEventListener('resize',resize);
-resize();
-
-for(let i=0;i<80;i++){
-  particles.push({
-    x:Math.random()*w,
-    y:Math.random()*h,
-    r:Math.random()*2+1,
-    vx:(Math.random()-.5)*0.4,
-    vy:(Math.random()-.5)*0.4
-  });
-}
-
-function draw(){
-  ctx.clearRect(0,0,w,h);
-  ctx.fillStyle='rgba(255,255,255,.6)';
-  particles.forEach(p=>{
-    p.x+=p.vx; p.y+=p.vy;
-    if(p.x<0||p.x>w) p.vx*=-1;
-    if(p.y<0||p.y>h) p.vy*=-1;
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fill();
-  });
-  requestAnimationFrame(draw);
-}
-draw();
-</script>
 </body>
 </html>
